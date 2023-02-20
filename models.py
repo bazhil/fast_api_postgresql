@@ -9,3 +9,6 @@ class Item(Base):
     description = Column(Text, nullable=False)
     price = Column(Integer, nullable=False)
     on_offer = Column(Boolean, default=False)
+
+    def __repr__(self):
+        return f'<Item name={self.name} price{self.price}>'
