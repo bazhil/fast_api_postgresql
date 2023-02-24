@@ -1,3 +1,5 @@
+from httplib import HTTPException
+
 from fastapi import FastAPI, status
 from pydantic import BaseModel
 from typing import Optional, List
@@ -66,6 +68,10 @@ def create_an_item(item: Item):
         description=item.description,
         on_offer=item.on_offer
     )
+
+    db_item = db.query(models.Item).filter(item.name==new_item.name).first()
+    if db_item is not None:
+        raise HTTPException(status_code=400, detail='Item already exists')
 
     db.add(new_item)
     db.commit()
